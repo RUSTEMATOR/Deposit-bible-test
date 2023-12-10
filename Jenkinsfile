@@ -26,21 +26,23 @@ pipeline {
         stage('Test Run') {
             steps {
                 script {
-                    // Assuming you have pytest installed in your environment
-                    sh "pip install pytest"
-                    
-                    // Build the command for running the tests
-                    def testCommand = "pytest -s -k test_deposit_bible -m ${params.marker} --url ${params.url} --path ${params.path}"
-                    
-                    // Add the branch parameter if needed
-                    if (params.branch) {
-                        testCommand += " --branch ${params.branch}"
-                    }
-
-                    sh testCommand
+                    // Explicitly use bash for the following commands
+                    sh '''
+                        /bin/bash -c "pip install pytest"
+                        
+                        # Build the command for running the tests
+                        testCommand="pytest -s -k test_deposit_bible -m ${params.marker} --url ${params.url} --path ${params.path}"
+                        
+                        # Add the branch parameter if needed
+                        if [ -n "${params.branch}" ]; then
+                            testCommand+=" --branch ${params.branch}"
+                        fi
+                        
+                        # Run the tests
+                        $testCommand
+                    '''
                 }
             }
         }
     }
 }
-
