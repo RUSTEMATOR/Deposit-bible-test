@@ -29,7 +29,6 @@ pipeline {
                     sh '/bin/bash -c "/usr/bin/sudo chmod +x install.sh"'
                     // Add other setup commands as needed
                 }
-                }
             }
         }
 
