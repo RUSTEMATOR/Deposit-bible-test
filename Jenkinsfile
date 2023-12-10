@@ -1,17 +1,6 @@
 pipeline {
     agent any
 
-    stages {
-            stage('Checkout') {
-                steps {
-                    checkout scm
-                }
-            }
-    
-            // Add other stages as needed
-        }
-    }
-    
     parameters {
         string(name: 'branch', defaultValue: 'master', description: 'Branch to build from')
         string(name: 'url', defaultValue: 'https://www.kingbillycasino.com', description: 'URL to test')
@@ -20,6 +9,12 @@ pipeline {
     }
 
     stages {
+        stage('Checkout') {
+            steps {
+                checkout scm
+            }
+        }
+
         stage('SCM') {
             steps {
                 script {
