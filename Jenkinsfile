@@ -24,24 +24,18 @@ pipeline {
         }
 
         stage('Test Run') {
-            steps {
-                script {
-                    // Explicitly use the full path to bash
-                    sh '''
-                        /bin/bash -c "pip install pytest"
-                        
-                        # Build the command for running the tests
-                        testCommand="pytest -s -k test_deposit_bible -m ${params.marker} --url ${params.url} --path ${params.path}"
-                        
-                        # Add the branch parameter if needed
-                        if [ -n "${params.branch}" ]; then
-                            testCommand+=" --branch ${params.branch}"
-                        fi
-                        
-                        # Run the tests
-                        $testCommand
-                    '''
-                }
+    steps {
+        script {
+            // Assuming you have pytest installed in your environment
+            script {
+                // Explicitly use the full path to bash
+                def command = """
+                    /bin/bash -c 'pip install pytest &&
+                    pytest -s -k test_deposit_bible -m \${params.marker} --url \${params.url} --path \${params.path} &&
+                    echo "Tests completed successfully"'
+                """
+
+                sh command
             }
         }
     }
