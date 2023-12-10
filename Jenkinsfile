@@ -25,18 +25,18 @@ pipeline {
 
         stage('Test Run') {
             steps {
+                // Assuming you have pytest installed in your environment
                 script {
-                    // Assuming you have pytest installed in your environment
-                    script {
-                        // Explicitly use the full path to bash
-                        def command = """
-                            /bin/bash -c 'pip install pytest &&
-                            pytest -s -k test_deposit_bible -m \${params.marker} --url \${params.url} --path \${params.path} &&
-                            echo "Tests completed successfully"'
-                        """
-        
-                        sh command
-                    }
+                    // Explicitly use the full path to bash
+                    def command = """
+                        /bin/bash -c 'pip install pytest &&
+                        pytest -s -k test_deposit_bible -m \${params.marker} --url \${params.url} --path \${params.path} &&
+                        echo "Tests completed successfully"'
+                    """
+    
+                    sh command
                 }
             }
         }
+    }
+}
