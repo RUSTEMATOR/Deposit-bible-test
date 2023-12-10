@@ -26,7 +26,7 @@ pipeline {
         stage('Test Run') {
             steps {
                 script {
-                    // Explicitly use bash for the following commands
+                    // Explicitly use the full path to bash
                     sh '''
                         /bin/bash -c "pip install pytest"
                         
