@@ -29,9 +29,9 @@ pipeline {
                 script {
                     // Explicitly use the full path to bash
                     def command = """
-                        /bin/bash -c 'pip install pytest &&
+                        /bin/bash -c "pip install pytest &&
                         pytest -s -k test_deposit_bible -m \${params.marker} --url \${params.url} --path \${params.path} &&
-                        echo "Tests completed successfully"'
+                        echo 'Tests completed successfully'"
                     """
     
                     sh command
