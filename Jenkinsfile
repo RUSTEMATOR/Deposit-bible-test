@@ -1,10 +1,10 @@
- pipeline {
+pipeline {
     agent any
 
     parameters {
-        string(name: 'branch', defaultValue: 'main', description: 'Select the branch to build')
-        string(name: 'url', defaultValue: '', description: 'URL of the page to be tested')
-        string(name: 'path', defaultValue: '.', description: 'Directory or file path with tests')
+        string(name: 'branch', defaultValue: 'master', description: 'Branch to build from')
+        string(name: 'url', defaultValue: 'https://www.kingbillycasino.com', description: 'URL to test')
+        string(name: 'path', defaultValue: 'Desktop/Deposit bible screenshots', description: 'Path to test')
         string(name: 'marker', defaultValue: '', description: 'Parameters for pytest mark')
     }
 
@@ -12,7 +12,7 @@
         stage('SCM') {
             steps {
                 script {
-                    // SCM steps go here
+                    checkout([$class: 'GitSCM', branches: [[name: "*/${params.branch}"]], userRemoteConfigs: [[url: 'https://github.com/RUSTEMATOR/Deposit-bible-test.git']]])
                 }
             }
         }
@@ -20,7 +20,8 @@
         stage('Test Repo Setup') {
             steps {
                 script {
-                    // Test Repo Setup steps go here
+                    sh 'sudo chmod +x install.sh'
+                    // Add other setup commands as needed
                 }
             }
         }
@@ -28,19 +29,20 @@
         stage('Test Run') {
             steps {
                 script {
-                    // Test Run steps go here
+                    // Assuming you have pytest installed in your environment
+                    sh "pip install pytest"
+                    
+                    // Build the command for running the tests
+                    def testCommand = "pytest -s -k test_deposit_bible -m ${params.marker} --url ${params.url} --path ${params.path}"
+                    
+                    // Add the branch parameter if needed
+                    if (params.branch) {
+                        testCommand += " --branch ${params.branch}"
+                    }
+
+                    sh testCommand
                 }
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Pipeline succeeded. You can add more post-build actions here.'
-        }
-
-        failure {
-            echo 'Pipeline failed. You can add more post-build actions for failure here.'
         }
     }
 }
