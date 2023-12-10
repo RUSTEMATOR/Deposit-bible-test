@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'branch', defaultValue: 'master', description: 'Branch to build from')
+        string(name: 'branch', defaultValue: 'main', description: 'Branch to build from') // Changed 'master' to 'main'
         string(name: 'url', defaultValue: 'https://www.kingbillycasino.com', description: 'URL to test')
         string(name: 'path', defaultValue: 'Desktop/Deposit bible screenshots', description: 'Path to test')
         string(name: 'marker', defaultValue: '', description: 'Parameters for pytest mark')
@@ -26,7 +26,8 @@ pipeline {
         stage('Test Repo Setup') {
             steps {
                 script {
-                    sh 'sudo chmod +x install.sh'
+                    // Use the full path to sudo
+                    sh '/usr/bin/sudo chmod +x install.sh'
                     // Add other setup commands as needed
                 }
             }
