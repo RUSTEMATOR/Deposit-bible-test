@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'branch', defaultValue: 'main', description: 'Branch to build from') // Changed 'master' to 'main
+        string(name: 'branch', defaultValue: 'main', description: 'Branch to build from')
         string(name: 'url', defaultValue: 'https://www.kingbillycasino.com', description: 'URL to test')
         string(name: 'path', defaultValue: '/Users/rustemsamoilenko/Desktop/Playwright/Deposit_bible/test_deposit_bible.py', description: 'Path to test')
         string(name: 'marker', defaultValue: '', description: 'Parameters for pytest mark')
@@ -25,11 +25,11 @@ pipeline {
 
         stage('Test Run') {
             steps {
-                // Assuming you have pytest installed in your environment
                 script {
                     // Explicitly use the full path to bash
                     def command = """
-                        sudo -E /bin/bash -c "pip install pytest && pytest -s -k test_deposit_bible -m ${params.marker} --url ${params.url} --path ${params.path} && echo 'Tests completed successfully'"
+                        sudo -E /bin/bash -c "pip install pytest && pytest -s -k test_deposit_bible -m \${params.marker} --url \${params.url} --path \${params.path} && echo 'Tests completed successfully'"
+                    """
                     sh command
                 }
             }
