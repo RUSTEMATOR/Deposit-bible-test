@@ -26,9 +26,9 @@ pipeline {
         stage('Test Repo Setup') {
             steps {
                 script {
-                    // Use the full path to sudo
-                    sh '/usr/bin/sudo chmod +x install.sh'
+                    sh '/bin/bash -c "/usr/bin/sudo chmod +x install.sh"'
                     // Add other setup commands as needed
+                }
                 }
             }
         }
