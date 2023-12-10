@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     parameters {
-        string(name: 'branch', defaultValue: 'main', description: 'Branch to build from') // Changed 'master' to 'main'
+        string(name: 'branch', defaultValue: 'main', description: 'Branch to build from') // Changed 'master' to 'main
         string(name: 'url', defaultValue: 'https://www.kingbillycasino.com', description: 'URL to test')
         string(name: 'path', defaultValue: 'Desktop/Deposit bible screenshots', description: 'Path to test')
         string(name: 'marker', defaultValue: '', description: 'Parameters for pytest mark')
@@ -19,15 +19,6 @@ pipeline {
             steps {
                 script {
                     checkout([$class: 'GitSCM', branches: [[name: "*/${params.branch}"]], userRemoteConfigs: [[url: 'https://github.com/RUSTEMATOR/Deposit-bible-test.git']]])
-                }
-            }
-        }
-
-        stage('Test Repo Setup') {
-            steps {
-                script {
-                    sh '/bin/bash -c "/usr/bin/sudo chmod +x install.sh"'
-                    // Add other setup commands as needed
                 }
             }
         }
@@ -52,3 +43,4 @@ pipeline {
         }
     }
 }
+
