@@ -24,7 +24,7 @@ pipeline {
                 echo "Marker: ${params.marker}"
 
                  // Print environment variables
-                sh 'printenv'
+                sh 'env'
 
                 def markerOption = params.marker ? "-m ${params.marker}" : ""
                 sh "GIT_EXECUTABLE=/usr/bin/git /usr/local/bin/python3 -m pytest -s -k test_deposit_bible --url ${params.url} --path ${params.path} ${markerOption}"
