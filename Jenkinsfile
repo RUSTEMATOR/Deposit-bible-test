@@ -3,29 +3,48 @@ pipeline {
 
     parameters {
         string(name: 'branch', defaultValue: 'main', description: 'Branch to build from')
+        string(name: 'url', defaultValue: 'https://www.kingbillycasino.com', description: 'URL to test')
+        string(name: 'path', defaultValue: '/Users/rustemsamoilenko/Desktop/Playwright/Deposit_bible/test_deposit_bible.py', description: 'Path to test')
+        string(name: 'marker', defaultValue: '', description: 'Parameters for pytest mark')
     }
 
     stages {
-        stage('Checkout and Run Tests') {
+        stage('Checkout') {
             steps {
-                // Checkout the code from the repository
-                checkout([$class: 'GitSCM', branches: [[name: "*/${params.branch}"]], userRemoteConfigs: [[url: 'https://github.com/RUSTEMATOR/Deposit-bible-test.git']]])
-
-                // Install necessary dependencies
-                sh 'pip3 install -r requirements.txt'  // Adjust if needed
-
-                // Run the tests
-                sh 'pytest -v /Users/rustemsamoilenko/Desktop/Playwright/Deposit_bible/test_deposit_bible.py'
+                checkout scm
             }
         }
-    }
 
-    post {
-        success {
-            echo 'Tests completed successfully!'
+        stage('SCM') {
+            steps {
+                script {
+                    checkout([$class: 'GitSCM', branches: [[name: "*/${params.branch}"]], userRemoteConfigs: [[url: 'https://github.com/RUSTEMATOR/Deposit-bible-test.git']]])
+                }
+            }
         }
-        failure {
-            echo 'Tests failed!'
+
+        stage('Install Dependencies') {
+            steps {
+                script {
+                    // Install dependencies, including playwright
+                    sh '/usr/local/bin/python3 -m pip install -r requirements.txt'
+                    sh '/usr/local/bin/python3 -m pip install playwright'
+                }
+            }
+        }
+
+        stage('Test Run') {
+            steps {
+                script {
+                    // Explicitly use the full path to bash
+                    def command = """
+                        sudo -E /bin/bash -c "/usr/local/bin/python3 -m pip install pytest &&
+                           /usr/local/bin/python3 -m pytest -s -k test_deposit_bible -m \${params.marker} --url \${params.url} --path \${params.path} &&
+                           echo 'Tests completed successfully'"
+                    """
+                    sh command
+                }
+            }
         }
     }
 }
