@@ -22,9 +22,10 @@ pipeline {
                 echo "URL: ${params.url}"
                 echo "Path: ${params.path}"
                 echo "Marker: ${params.marker}"
-                sh "/usr/local/bin/python3 -m pytest -s -k test_deposit_bible ${params.marker ? "-m ${params.marker}" : ""} --url ${params.url} --path ${params.path}"
+                sh "GIT_EXECUTABLE=/usr/bin/git /usr/local/bin/python3 -m pytest -s -k test_deposit_bible -m ${params.marker} --url ${params.url} --path ${params.path}"
             }
         }
     }
+}
 }
 }
