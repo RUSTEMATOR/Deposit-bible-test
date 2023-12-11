@@ -33,15 +33,17 @@ pipeline {
             }
         }
 
-        stage('Test Run') {
+       stage('Test Run') {
             steps {
                 script {
                     // Explicitly use the full path to bash
                     def command = """
                         sudo -E /bin/bash -c '/usr/local/bin/python3 -m pip install pytest &&
-                        /usr/local/bin/python3 -m pytest -s -k test_deposit_bible -m \${params.marker} --url \${params.url} --path \${params.path} &&
-                        echo "Tests completed successfully"'
+                           /usr/local/bin/python3 -m pip install -r requirements.txt &&
+                           /usr/local/bin/python3 -m pytest -s -k test_deposit_bible -m \${params.marker} --url \${params.url} --path \${params.path} &&
+                           echo "Tests completed successfully"'
                     """
                     sh returnStatus: true, script: command
                 }
-
+            }
+        }
