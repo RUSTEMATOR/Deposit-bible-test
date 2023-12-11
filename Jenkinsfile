@@ -38,9 +38,9 @@ pipeline {
                 script {
                     // Explicitly use the full path to bash
                     def command = """
-                        sudo -E /bin/bash -c \"/usr/local/bin/python3 -m pip install pytest &&
+                        sudo -E /bin/bash -c \'/usr/local/bin/python3 -m pip install pytest &&
                            /usr/local/bin/python3 -m pytest -s -k test_deposit_bible -m \${params.marker} --url \${params.url} --path \${params.path} &&
-                           echo 'Tests completed successfully'\"
+                           echo "Tests completed successfully"\'
                     """
                     sh command
                 }
