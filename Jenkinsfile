@@ -15,12 +15,6 @@ pipeline {
             }
         }
 
-        stage('Install Dependencies') {
-            steps {
-                sh '/usr/local/bin/python3 -m pip install -r requirements.txt'
-                sh '/usr/local/bin/python3 -m pip install playwright'
-            }
-        }
 
         stage('Test Run') {
             steps {
