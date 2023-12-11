@@ -42,6 +42,6 @@ pipeline {
                            /usr/local/bin/python3 -m pytest -s -k test_deposit_bible -m \${params.marker} --url \${params.url} --path \${params.path} &&
                            echo "Tests completed successfully"\'
                     """
-                    sh command
+                    sh returnStatus: true, script: command
                 }
 
