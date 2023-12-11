@@ -22,6 +22,8 @@ pipeline {
                 echo "URL: ${params.url}"
                 echo "Path: ${params.path}"
                 echo "Marker: ${params.marker}"
+
+                def markerOption = params.marker ? "-m ${params.marker}" : ""
                 sh "GIT_EXECUTABLE=/usr/bin/git /usr/local/bin/python3 -m pytest -s -k test_deposit_bible --url ${params.url} --path ${params.path} ${markerOption}"
             }
         }
