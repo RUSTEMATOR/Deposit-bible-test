@@ -16,20 +16,14 @@ pipeline {
         }
 
 
-    stage('Test Run') {
-        steps {
-            script {
-                echo "URL: ${params.url}"
-                echo "Path: ${params.path}"
-                echo "Marker: ${params.marker}"
-
-                 // Print environment variables
-                sh 'env'
-
-                def markerOption = params.marker ? "-m ${params.marker}" : ""
-                sh "GIT_EXECUTABLE=/usr/bin/git /usr/local/bin/python3 -m pytest -s -k test_deposit_bible --url ${params.url} --path ${params.path} ${markerOption}"
+    stages {
+        stage('Run Tests') {
+            steps {
+                script {
+                    // Run the pytest command with arguments
+                    sh "pytest -s -k test_deposit_bible --url https://www.kingbillycasino.com --path /Users/rustemsamoilenko/Desktop/Playwright/Deposit_bible/test_deposit_bible.py"
+                }
             }
         }
     }
-}
 }
