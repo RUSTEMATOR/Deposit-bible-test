@@ -26,17 +26,17 @@ class CustomMethods(Page):
         counter = 1
 
         # Construct the screenshot path with a generic filename or a specific naming convention
-        screenshot_path = os.path.join(dir_path, f"({account_key})({name}).png")
+        screenshot_path = os.path.join(dir_path, f"{account_key}_{name}.png")
 
         # Check if the screenshot file already exists and increment the counter until a unique filename is found
         while os.path.exists(screenshot_path):
             counter += 1
-            screenshot_path = os.path.join(dir_path, f"({locale})({profile_position})({counter}).png")
+            screenshot_path = os.path.join(dir_path, f"{locale}_{profile_position}_{counter}.png")
 
         self.page.screenshot(path=screenshot_path, full_page=False)
         return screenshot_path
 
-    def capture_screenshot_old(self, locale, profile_position):
+    def capture_screenshot_old(self, locale, profile_position, name, account_key):
         # Adjusted base directory to include 'Promo_placement'
         base_dir = "Screenshots_old"
         # Adjusted date format to 'DD.MM.YYYY'
@@ -50,12 +50,12 @@ class CustomMethods(Page):
         counter = 1
 
         # Construct the screenshot path with a generic filename or a specific naming convention
-        screenshot_path = os.path.join(dir_path, f"screenshot({counter}).png")
+        screenshot_path = os.path.join(dir_path, f"({account_key}_{name}_old.png")
 
         # Check if the screenshot file already exists and increment the counter until a unique filename is found
         while os.path.exists(screenshot_path):
             counter += 1
-            screenshot_path = os.path.join(dir_path, f"({locale})({profile_position}).png")
+            screenshot_path = os.path.join(dir_path, f"{locale}_{profile_position}_old.png")
 
         self.page.screenshot(path=screenshot_path)
         return screenshot_path
