@@ -101,3 +101,50 @@ def test_old(playwright: Playwright, account_key, username, password, url, depos
 
         raise AssertionError
 
+
+
+@pytest.mark.parametrize("account_key, username, password, url, deposit_url, withdrawal_url", [(key, val['username'],
+                                                              val['password'], val['url'], val['deposit_url'], val['withdrawal_url']) for key, val in config.two_plus_dep.items()])
+def test_several_deps(playwright: Playwright, account_key, username, password, url, deposit_url, withdrawal_url):
+    browser = playwright.chromium.launch(headless=False)
+    context = browser.new_context(viewport={"width": 1800, "height": 1000})
+    page = context.new_page()
+    try:
+        with ExpressVpnApi() as api:
+            locations = api.locations  # get available locations
+            loc = next((location for location in locations if location["country_code"] == account_key), None)
+            api.connect(loc["id"])
+
+        email = config.two_plus_dep[account_key]['username']
+        password = config.two_plus_dep[account_key]['password']
+        url = config.two_plus_dep[account_key]['url']
+        deposit_url = config.two_plus_dep[account_key]['deposit_url']
+        withdrawal_url = config.two_plus_dep[account_key]['withdrawal_url']
+
+        welcome_page = WelcomePage(page)
+        methods = CustomMethods(page)
+
+        methods.visit_page(url)
+
+        welcome_page.login(email, password)
+
+        welcome_page.click_deposit_button()
+        time.sleep(20)
+
+        methods.capture_screenshot_several_dep(account_key, "Deposit", "Deposit", account_key)
+
+        methods.visit_page(deposit_url)
+        time.sleep(20)
+        methods.capture_screenshot_several_dep(account_key, "Deposit_Profile", "Deposit_profile", account_key)
+
+        methods.visit_page(withdrawal_url)
+        time.sleep(20)
+        methods.capture_screenshot_several_dep(account_key, "Withdrawal", "Withdrawal", account_key)
+
+        browser.close()
+
+
+    except:
+        browser.close()
+
+        raise AssertionError

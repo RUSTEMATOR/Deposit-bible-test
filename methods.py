@@ -60,6 +60,32 @@ class CustomMethods(Page):
         self.page.screenshot(path=screenshot_path)
         return screenshot_path
 
+
+
+    def capture_screenshot_several_dep(self, locale, profile_position, name, account_key):
+        # Adjusted base directory to include 'Promo_placement'
+        base_dir = "Screenshots_several_dep"
+        # Adjusted date format to 'DD.MM.YYYY'
+        date_str = datetime.now().strftime("%d.%m.%Y")
+        # Adjusted directory path to include 'locale' and 'screenshot_name' for promo placement
+        dir_path = os.path.join(base_dir, date_str, locale, profile_position)
+
+        # Ensure the directory exists
+        os.makedirs(dir_path, exist_ok=True)
+
+        counter = 1
+
+        # Construct the screenshot path with a generic filename or a specific naming convention
+        screenshot_path = os.path.join(dir_path, f"({account_key}_{name}_several_dep.png")
+
+        # Check if the screenshot file already exists and increment the counter until a unique filename is found
+        while os.path.exists(screenshot_path):
+            counter += 1
+            screenshot_path = os.path.join(dir_path, f"{locale}_{profile_position}_several_dep.png")
+
+        self.page.screenshot(path=screenshot_path)
+        return screenshot_path
+
     # @pytest.mark.parametrize("locale, username, password", [(key, val['locale'], val['username'], val['password']) for key, val in config.accounts])
 
 
